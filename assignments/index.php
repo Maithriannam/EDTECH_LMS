@@ -1,22 +1,42 @@
 <?php
 
-include "../config/constants.php";
-
-session_start();
-
 include "../config/db.php";
 
-$sql =
-"SELECT * FROM assignments
-ORDER BY id DESC";
+$assignments = [
 
-$result =
-mysqli_query($conn, $sql);
+[
+"title" => "AI Research Assignment",
+"subject" => "Artificial Intelligence",
+"deadline" => "Tomorrow",
+"status" => "Pending"
+],
+
+[
+"title" => "DBMS Normalization",
+"subject" => "Database Management",
+"deadline" => "2 Days Left",
+"status" => "Submitted"
+],
+
+[
+"title" => "Cloud Architecture",
+"subject" => "Cloud Computing",
+"deadline" => "Today",
+"status" => "Pending"
+],
+
+[
+"title" => "Frontend UI Task",
+"subject" => "Web Development",
+"deadline" => "5 Days Left",
+"status" => "Submitted"
+]
+
+];
 
 ?>
 
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -28,11 +48,7 @@ name="viewport"
 content="width=device-width, initial-scale=1.0"
 >
 
-<title>
-
-Assignments
-
-</title>
+<title>Assignments</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -44,7 +60,6 @@ rel="stylesheet"
 <style>
 
 *{
-
 margin:0;
 padding:0;
 box-sizing:border-box;
@@ -54,7 +69,7 @@ body{
 
 font-family:'Inter',sans-serif;
 
-background:#f1f5f9;
+background:#eef2f7;
 
 transition:0.3s;
 }
@@ -75,9 +90,9 @@ left:0;
 
 top:0;
 
-border-right:1px solid #e2e8f0;
+padding:20px;
 
-padding:24px;
+border-right:1px solid #e2e8f0;
 
 overflow-y:auto;
 }
@@ -88,6 +103,8 @@ font-size:24px;
 
 font-weight:800;
 
+margin-bottom:40px;
+
 background:linear-gradient(
 to right,
 #7c3aed,
@@ -96,27 +113,9 @@ to right,
 
 -webkit-background-clip:text;
 
+background-clip:text;
+
 -webkit-text-fill-color:transparent;
-}
-
-.menu{
-
-margin-top:35px;
-}
-
-.menu-title{
-
-font-size:11px;
-
-font-weight:700;
-
-color:#94a3b8;
-
-margin-bottom:15px;
-
-text-transform:uppercase;
-
-letter-spacing:1px;
 }
 
 .menu a{
@@ -127,35 +126,26 @@ align-items:center;
 
 gap:12px;
 
-padding:13px 16px;
+padding:14px 18px;
 
-margin-bottom:10px;
+margin-bottom:12px;
 
-border-radius:14px;
-
-font-size:13px;
-
-font-weight:500;
-
-color:#334155;
+border-radius:16px;
 
 text-decoration:none;
+
+font-size:14px;
+
+font-weight:600;
+
+color:#0f172a;
 
 transition:0.3s;
 }
 
 .menu a:hover{
 
-background:#eff6ff;
-
-color:#2563eb;
-}
-
-.active{
-
 background:#dbeafe;
-
-color:#2563eb !important;
 }
 
 /* MAIN */
@@ -164,105 +154,65 @@ color:#2563eb !important;
 
 margin-left:250px;
 
-padding:24px;
+padding:20px;
 }
 
 /* TOPBAR */
 
 .topbar{
 
-height:72px;
-
-background:white;
-
-border-radius:18px;
-
-padding:0 24px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-border:1px solid #e2e8f0;
-}
-
-.page-title{
-
-font-size:22px;
-
-font-weight:700;
-}
-
-.search{
-
-width:250px;
-
-padding:10px 14px;
-
-border-radius:12px;
-
-border:1px solid #cbd5e1;
-
-font-size:12px;
-
-outline:none;
-}
-
-/* ASSIGNMENTS GRID */
-
-.assignment-grid{
-
-display:grid;
-
-grid-template-columns:repeat(3,1fr);
-
-gap:20px;
-
-margin-top:24px;
-}
-
-.assignment-card{
+height:74px;
 
 background:white;
 
 border-radius:22px;
 
-padding:22px;
-
-border:1px solid #e2e8f0;
-
-transition:0.3s;
-
-position:relative;
-
-overflow:hidden;
-}
-
-.assignment-card:hover{
-
-transform:translateY(-6px);
-
-box-shadow:0 15px 30px rgba(0,0,0,0.08);
-}
-
-.assignment-top{
+padding:0 22px;
 
 display:flex;
 
+align-items:center;
+
 justify-content:space-between;
 
-align-items:center;
+border:1px solid #e2e8f0;
 }
 
-.assignment-icon{
+.search{
 
-width:52px;
+width:280px;
 
-height:52px;
+height:42px;
 
-border-radius:18px;
+padding:0 16px;
+
+border-radius:14px;
+
+border:1px solid #cbd5e1;
+
+font-size:13px;
+
+outline:none;
+}
+
+.top-right{
+
+display:flex;
+
+align-items:center;
+
+gap:16px;
+}
+
+/* NOTIFICATION */
+
+.notification{
+
+width:40px;
+
+height:40px;
+
+border-radius:14px;
 
 background:linear-gradient(
 135deg,
@@ -276,173 +226,256 @@ align-items:center;
 
 justify-content:center;
 
-font-size:22px;
+position:relative;
+
+font-size:14px;
 
 color:white;
 }
 
-.status{
+.notification-count{
 
-padding:7px 14px;
+position:absolute;
 
-border-radius:40px;
+top:-5px;
 
-font-size:11px;
+right:-5px;
+
+width:18px;
+
+height:18px;
+
+border-radius:50%;
+
+background:#ef4444;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:10px;
 
 font-weight:700;
-
-background:#dcfce7;
-
-color:#166534;
 }
 
-.assignment-title{
+/* TOGGLE */
 
-font-size:19px;
+.theme-toggle{
 
-font-weight:700;
+width:38px;
 
-margin-top:18px;
+height:20px;
+
+background:#dbe4f0;
+
+border-radius:30px;
+
+position:relative;
+
+cursor:pointer;
+}
+
+.toggle-circle{
+
+width:14px;
+
+height:14px;
+
+background:white;
+
+border-radius:50%;
+
+position:absolute;
+
+top:3px;
+
+left:3px;
+
+transition:0.3s;
+}
+
+/* PROFILE */
+
+.profile img{
+
+width:42px;
+
+height:42px;
+
+border-radius:50%;
+}
+
+/* TITLE */
+
+.page-title{
+
+font-size:40px;
+
+font-weight:800;
+
+margin-top:28px;
 
 color:#0f172a;
 }
 
-.assignment-desc{
+.page-subtitle{
 
-font-size:12px;
+font-size:15px;
 
-line-height:22px;
+margin-top:8px;
+
+color:#64748b;
+}
+
+/* GRID */
+
+.grid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:24px;
+
+margin-top:30px;
+}
+
+/* CARD */
+
+.card{
+
+background:white;
+
+border-radius:24px;
+
+padding:24px;
+
+border:1px solid #e2e8f0;
+
+transition:0.3s;
+}
+
+.card:hover{
+
+transform:translateY(-5px);
+
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.assignment-title{
+
+font-size:20px;
+
+font-weight:700;
+
+color:#0f172a;
+}
+
+.subject{
+
+font-size:14px;
 
 color:#64748b;
 
-margin-top:12px;
+margin-top:8px;
 }
 
-.assignment-info{
+.bottom{
 
-margin-top:20px;
-}
-
-.info-item{
+margin-top:22px;
 
 display:flex;
 
 justify-content:space-between;
 
-margin-bottom:10px;
-
-font-size:12px;
+align-items:center;
 }
 
-.label{
+.deadline{
 
-color:#94a3b8;
-}
-
-.value{
+font-size:13px;
 
 font-weight:600;
 
-color:#0f172a;
+color:#ef4444;
 }
 
-.assignment-actions{
+.status{
 
-display:flex;
+padding:6px 14px;
 
-gap:12px;
+border-radius:30px;
 
-margin-top:22px;
+font-size:12px;
+
+font-weight:700;
 }
+
+.pending{
+
+background:#fee2e2;
+
+color:#dc2626;
+}
+
+.submitted{
+
+background:#dcfce7;
+
+color:#16a34a;
+}
+
+/* BUTTON */
 
 .btn{
 
-flex:1;
+margin-top:18px;
 
-padding:12px;
-
-border-radius:14px;
+padding:11px 18px;
 
 border:none;
 
-font-size:12px;
+border-radius:14px;
+
+font-size:13px;
 
 font-weight:700;
 
 cursor:pointer;
 
-transition:0.3s;
-}
-
-.download-btn{
+color:white;
 
 background:linear-gradient(
 to right,
 #8b5cf6,
 #06b6d4
 );
-
-color:white;
-}
-
-.download-btn:hover{
-
-opacity:0.9;
-}
-
-.view-btn{
-
-background:#eff6ff;
-
-color:#2563eb;
-}
-
-.view-btn:hover{
-
-background:#dbeafe;
 }
 
 /* DARK MODE */
 
-.dark-mode{
+.dark{
 
 background:#020617;
-
-color:white;
 }
 
-.dark-mode .sidebar,
-.dark-mode .topbar,
-.dark-mode .assignment-card{
+.dark .sidebar,
+.dark .topbar,
+.dark .card{
 
 background:#0f172a;
 
 border-color:#1e293b;
 }
 
-.dark-mode .menu a{
-
-color:#cbd5e1;
-}
-
-.dark-mode .menu a:hover{
-
-background:#1e293b;
-}
-
-.dark-mode .assignment-title,
-.dark-mode .value{
+.dark .menu a{
 
 color:white;
 }
 
-.dark-mode .assignment-desc,
-.dark-mode .label{
-
-color:#94a3b8;
-}
-
-.dark-mode .search{
+.dark .search{
 
 background:#020617;
 
@@ -451,13 +484,28 @@ border-color:#334155;
 color:white;
 }
 
-/* RESPONSIVE */
+.dark .assignment-title,
+.dark .page-title{
 
-@media(max-width:1200px){
+color:white;
+}
 
-.assignment-grid{
+.dark .subject,
+.dark .page-subtitle{
 
-grid-template-columns:repeat(2,1fr);
+color:#94a3b8;
+}
+
+.dark .toggle-circle{
+
+left:21px;
+}
+
+@media(max-width:900px){
+
+.grid{
+
+grid-template-columns:1fr;
 }
 }
 
@@ -465,19 +513,12 @@ grid-template-columns:repeat(2,1fr);
 
 .sidebar{
 
-width:100%;
-height:auto;
-position:relative;
+display:none;
 }
 
 .main{
 
 margin-left:0;
-}
-
-.assignment-grid{
-
-grid-template-columns:1fr;
 }
 }
 
@@ -492,82 +533,37 @@ grid-template-columns:1fr;
 <div class="sidebar">
 
 <div class="logo">
-
-GradSkills
-
+    Learnova
 </div>
 
 <div class="menu">
 
-<div class="menu-title">
-
-Navigation
-
-</div>
-
-<a
-href="<?php echo BASE_URL; ?>dashboard/student/index.php"
->
-
+<a href="../dashboard/student/index.php">
 🏠 Dashboard
-
 </a>
 
-<a
-href="<?php echo BASE_URL; ?>courses/index.php"
->
-
+<a href="../courses/index.php">
 📚 Courses
-
 </a>
 
-<a
-href="<?php echo BASE_URL; ?>assignments/index.php"
-class="active"
->
-
+<a href="../assignments/index.php">
 📝 Assignments
-
 </a>
 
-<a
-href="<?php echo BASE_URL; ?>tests/index.php"
->
-
+<a href="../tests/index.php">
 🧠 Tests
-
 </a>
 
-<a
-href="<?php echo BASE_URL; ?>payments/index.php"
->
-
+<a href="../payments/index.php">
 💳 Payments
-
 </a>
 
-<a
-href="<?php echo BASE_URL; ?>classes/index.php"
->
-
+<a href="../classes/index.php">
 🎥 Live Classes
-
 </a>
 
-<a
-href="<?php echo BASE_URL; ?>certificates/generate.php"
->
-
-🏆 Certificates
-
-</a>
-
-<a
-href="<?php echo BASE_URL; ?>ai/index.php"
->
-
+<a href="../ai/index.php">
 🤖 AI Mentor
-
 </a>
 
 </div>
@@ -582,127 +578,110 @@ href="<?php echo BASE_URL; ?>ai/index.php"
 
 <div class="topbar">
 
-<div class="page-title">
-
-Assignments
-
-</div>
-
 <input
 type="text"
 placeholder="Search assignments..."
 class="search"
 >
 
-</div>
+<div class="top-right">
 
-<!-- ASSIGNMENTS -->
+<div class="notification">
 
-<div class="assignment-grid">
+🔔
 
-<?php
-
-while($row = mysqli_fetch_assoc($result)){
-
-?>
-
-<div class="assignment-card">
-
-<div class="assignment-top">
-
-<div class="assignment-icon">
-
-📝
-
-</div>
-
-<div class="status">
-
-ACTIVE
-
+<div class="notification-count">
+3
 </div>
 
 </div>
+
+<div
+class="theme-toggle"
+onclick="toggleTheme()"
+>
+
+<div class="toggle-circle"></div>
+
+</div>
+
+<div class="profile">
+
+<img
+src="https://i.pravatar.cc/100"
+>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- TITLE -->
+
+<div class="page-title">
+
+Assignments
+
+</div>
+
+<div class="page-subtitle">
+
+Track and submit your tasks 📚
+
+</div>
+
+<!-- GRID -->
+
+<div class="grid">
+
+<?php foreach($assignments as $assignment){ ?>
+
+<div class="card">
 
 <div class="assignment-title">
 
-<?php echo $row['title']; ?>
+<?php echo $assignment['title']; ?>
 
 </div>
 
-<div class="assignment-desc">
+<div class="subject">
 
-<?php echo $row['description']; ?>
-
-</div>
-
-<div class="assignment-info">
-
-<div class="info-item">
-
-<div class="label">
-
-Due Date
+<?php echo $assignment['subject']; ?>
 
 </div>
 
-<div class="value">
+<div class="bottom">
 
-<?php echo $row['due_date']; ?>
+<div class="deadline">
 
-</div>
-
-</div>
-
-<div class="info-item">
-
-<div class="label">
-
-Faculty
+⏰ <?php echo $assignment['deadline']; ?>
 
 </div>
 
-<div class="value">
+<div
+class="status <?php echo strtolower($assignment['status']); ?>"
+>
 
-<?php echo $row['uploaded_by']; ?>
+<?php echo $assignment['status']; ?>
 
 </div>
 
 </div>
-
-</div>
-
-<div class="assignment-actions">
 
 <a
-
-href="../uploads/assignments/<?php echo $row['file']; ?>"
-
-download
-
-class="
-btn
-download-btn
-text-center
+href="view-assignment.php?title=<?php echo urlencode($assignment['title']); ?>"
+class="btn"
+style="
+display:inline-block;
+text-decoration:none;
+text-align:center;
 "
 >
 
-Download
+Open Assignment
 
 </a>
-
-<button
-class="
-btn
-view-btn
-"
->
-
-View
-
-</button>
-
-</div>
 
 </div>
 
@@ -711,6 +690,18 @@ View
 </div>
 
 </div>
+
+<script>
+
+function toggleTheme(){
+
+document
+.getElementById("body")
+.classList.toggle("dark");
+
+}
+
+</script>
 
 </body>
 

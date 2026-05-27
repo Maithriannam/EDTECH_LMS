@@ -297,9 +297,9 @@ document
 
 var options = {
 
-
 "key":
-"rzp_test_SuIJfuP0V3YvJo",
+"PASTE_YOUR_RAZORPAY_TEST_KEY_HERE",
+
 "amount":
 99900,
 
@@ -307,7 +307,7 @@ var options = {
 "INR",
 
 "name":
-"GradSkills LMS",
+"Learnova LMS",
 
 "description":
 "Course Payment",

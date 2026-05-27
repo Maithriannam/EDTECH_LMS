@@ -747,7 +747,7 @@ background:#1e293b;
 
 <div class="logo">
 
-GradSkills
+Learnova
 
 </div>
 

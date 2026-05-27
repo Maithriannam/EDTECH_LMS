@@ -86,7 +86,7 @@ if(
           mb-12
         "
       >
-        GradSkills
+        Learnova
       </h1>
 
       <!-- MENU -->

@@ -296,7 +296,7 @@ color:#94a3b8;
 
 <div class="logo">
 
-GradSkills AI
+Learnova
 
 </div>
 

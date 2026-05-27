@@ -1,13 +1,15 @@
 <?php
 
-$message =
+header("Content-Type: application/json");
+
+$user_message =
 $_POST['message'];
 
 $api_key =
 "AIzaSyAZfOrxkqnHDLTt25P3NMtR2NvnQVjduBs";
 
 $url =
-"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=".$api_key;
+"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" . $api_key;
 
 $data = [
 
@@ -17,7 +19,7 @@ $data = [
 "parts" => [
 
 [
-"text" => $message
+"text" => $user_message
 ]
 
 ]
@@ -32,7 +34,7 @@ $options = [
 "http" => [
 
 "header" =>
-"Content-type: application/json",
+"Content-Type: application/json",
 
 "method" => "POST",
 
@@ -46,16 +48,36 @@ json_encode($data)
 $context =
 stream_context_create($options);
 
-$result =
+$response =
 file_get_contents(
 $url,
 false,
 $context
 );
 
-$response =
-json_decode($result,true);
+if($response === FALSE){
 
-echo $response['candidates'][0]['content']['parts'][0]['text'];
+echo json_encode([
+
+"reply" =>
+"API Error"
+
+]);
+
+exit;
+}
+
+$result =
+json_decode($response, true);
+
+$reply =
+$result['candidates'][0]['content']['parts'][0]['text']
+?? "No response";
+
+echo json_encode([
+
+"reply" => $reply
+
+]);
 
 ?>
