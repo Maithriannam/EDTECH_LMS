@@ -796,7 +796,7 @@ href="<?php echo BASE_URL; ?>tests/index.php"
 href="<?php echo BASE_URL; ?>payments/index.php"
 >
 
-💳 Payments
+💳 FeeFlow
 
 </a>
 

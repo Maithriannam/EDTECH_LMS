@@ -27,7 +27,7 @@ Navigation
 </a>
 
 <a href="../payments/index.php">
-💳 Payments
+💳 FeeFlow
 </a>
 
 <a href="../classes/index.php">

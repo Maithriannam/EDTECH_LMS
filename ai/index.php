@@ -328,7 +328,7 @@ Learnova
 
 <a href="../payments/index.php">
 
-💳 Payments
+💳 FeeFlow
 
 </a>
 
